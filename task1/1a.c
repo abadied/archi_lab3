@@ -32,25 +32,25 @@ void PrintHex(char* buffer, int length){
 int main(int argc, char** argv){
     void* endian = (char*)malloc(2*sizeof(char));
     char length[2] = {'0','0'};
-    virus* v = allocate_virus(80);
+    /*virus* v = allocate_virus(80);*/
     FILE* f = fopen(argv[1],"r");
     
     fread(endian,sizeof(char),2,f);
-    fread(length,sizeof(char),2,f);
     
-    printf("%hu",(*v).length);
-    
-    printf("%hu",(*v).length);
-    fread((void*)((*v).name),sizeof(char),16,f);
-    
-    fread((void*)((*v).signature),sizeof(char),80,f);
-    PrintHex((char*)endian,2);
-    
-  
-    printf("%s \n",(*v).name);
-    PrintHex((*v).signature,(int)(*v).length);
+    while(fread(length,sizeof(char),2,f) != 0){
+        unsigned short len = ((length[1] << 8) &0xFF00) | (length[0] & 0xFF);
+        virus* v = allocate_virus(len);
+        printf("%hu \n",(*v).length);
+        fread((void*)((*v).name),sizeof(char),16,f);
+        fread((void*)((*v).signature),sizeof(char),len,f);
+        printf("%s \n",(*v).name);
+        PrintHex((*v).signature,(int)(*v).length);
+        free(v);
+        
+    }
+   
     free(endian);
-    free(v);
+    
     return 0;
     
 }
