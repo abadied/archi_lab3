@@ -30,15 +30,15 @@ void PrintHex(char* buffer, int length){
 
 
 int main(int argc, char** argv){
-    void* endian = (char*)malloc(2*sizeof(char));
-    char length[2] = {'0','0'};
+    void* endian = (char*)malloc(sizeof(char));
+    char* length = (char*)malloc(2*sizeof(char));
     /*virus* v = allocate_virus(80);*/
     FILE* f = fopen(argv[1],"r");
     
-    fread(endian,sizeof(char),2,f);
+    fread(endian,sizeof(char),1,f);
     
     while(fread(length,sizeof(char),2,f) != 0){
-        unsigned short len = ((length[1] << 8) &0xFF00) | (length[0] & 0xFF);
+        unsigned short len = ((length[1] << 8) & 0xFF00) | (length[0] & 0xFF);
         virus* v = allocate_virus(len);
         printf("%hu \n",(*v).length);
         fread((void*)((*v).name),sizeof(char),16,f);
