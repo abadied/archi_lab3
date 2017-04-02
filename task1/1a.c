@@ -34,6 +34,7 @@ int main(int argc, char** argv){
     char* length = (char*)malloc(2*sizeof(char));
     FILE* f = fopen(argv[1],"r");
     char endian = fgetc(f);
+    fgetc(f);
     
     
     while(fread(length,sizeof(char),2,f) != 0){
