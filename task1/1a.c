@@ -46,10 +46,12 @@ int main(int argc, char** argv){
             len = (length[1]<<8) + length[0];
         
         virus* v = allocate_virus(len-18);
-        printf("%hu \n",(*v).length);
+        
         fread(((*v).name),sizeof(char),16,f);
         fread(((*v).signature),sizeof(char),len - 18,f);
-        printf("%s \n",(*v).name);
+        printf("Virus name: %s \n",(*v).name);
+        printf("Virus length: %hu \n",(*v).length);
+        printf("signature: \n");
         PrintHex((*v).signature,(int)(*v).length);
         free(v);
         
